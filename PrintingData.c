@@ -152,6 +152,6 @@ int main()
 // Adding at start O(1)
 // Adding at end O(1)
 // Getting head O(1)
-// Adding at given position O(position) to find position (at worst O(n)) and O(1) to insert
+// Adding at given position O(position) to find position (at worst O(n - 1)) a)nd O(1 to insert
 // Print list O(n)
 // Freeing list O(n)
