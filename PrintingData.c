@@ -56,15 +56,16 @@ void create_node(struct node **tail, int data)
   *tail = new_node;
 }
 
-void free_list(struct node *head)
+void free_list(struct node **head)
 {
-  struct node *current = head;
+  struct node *current = *head;
   while (current != NULL)
   {
     struct node *next = current->link;
     free(current);
     current = next;
   }
+  *head = NULL;
 }
 
 struct node *add_to_start(struct node **head, int data)
@@ -122,29 +123,102 @@ void get_head(struct node *head)
   printf("The head of this Linked List is %d (points to #%p -> %d)\n", head->data, head->link, head->link->data);
 }
 
+void delete_first(struct node **head)
+{
+  if (*head == NULL)
+    printf("List is already empty.");
+  else
+  {
+    struct node *temp = *head;
+    *head = (*head)->link;
+    free(temp);
+    temp->link = NULL;
+  }
+}
+
+void delete_last(struct node *head, struct node **tail)
+{
+  struct node *temp = head;
+  if (head == NULL)
+  {
+    printf("Linked list is already empty.");
+    return;
+  }
+
+  while (temp->link->link != NULL)
+  {
+    temp = temp->link;
+  }
+
+  free(temp->link);
+  temp->link = NULL;
+  *tail = temp;
+}
+
+void delete_node_at(struct node **head, struct node **tail, int position)
+{
+  if (*head == NULL)
+  {
+    printf("Linked list is already empty.");
+    return;
+  }
+  if (position == 0)
+  {
+    delete_first(head);
+    return;
+  }
+  else if (position == get_list_length(*head))
+  {
+    delete_last(*head, tail);
+    return;
+  }
+  else
+  {
+    struct node *current = *head;
+    struct node *previous = *head;
+    for (size_t i = 0; i < position; ++i)
+    {
+      previous = current;
+      current = current->link;
+    }
+    previous->link = current->link;
+    free(current);
+    current = NULL;
+  }
+}
+
+void reverse(struct node **head, struct node **tail)
+{
+  struct node *prev = NULL;
+  struct node *current = *head;
+  struct node *next = NULL;
+
+  while (current != NULL)
+  {
+    next = current->link;
+    current->link = prev;
+    prev = current;
+    current = next;
+  }
+
+  *tail = *head;
+  *head = prev;
+}
+
 int main()
 {
   struct node *head = create_head(1000);
   struct node *tail = head;
   create_node(&tail, 320);
-  create_node(&tail, 420);
-  create_node(&tail, 520);
-  create_node(&tail, 620);
-  create_node(&tail, 720);
-  create_node(&tail, 820);
-  add_to_start(&head, 105);
-  add_to_start(&head, 205);
-  add_to_start(&head, 305);
-  add_to_start(&head, 405);
-
-  insert_node_at(&head, &tail, get_list_length(head), 2000);
-  create_node(&tail, 10500);
-  insert_node_at(&head, &tail, 1, 69);
-
-  get_head(head);
   print_data(head);
-  printf("The length of the Linked List is %d", get_list_length(head));
-  free_list(head);
+  reverse(&head, &tail);
+  print_data(head);
+
+  free_list(&head);
+
+  printf("The length of the Linked List is %zu\n", get_list_length(head));
+  if (head == NULL)
+    printf("List deleted successfully");
 
   return 0;
 }
