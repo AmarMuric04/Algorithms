@@ -104,6 +104,17 @@ void add_at(struct node **tail, size_t position, int data)
 
 void delete_first(struct node **tail)
 {
+  if (*tail == NULL)
+  {
+    printf("CSLL already empty.");
+    return;
+  }
+  if ((*tail)->next == *tail)
+  {
+    free(*tail);
+    return;
+  }
+
   struct node *temp = (*tail)->next;
   (*tail)->next = (*tail)->next->next;
   free(temp);
@@ -111,6 +122,17 @@ void delete_first(struct node **tail)
 
 void delete_last(struct node **tail)
 {
+  if (*tail == NULL)
+  {
+    printf("CSLL already empty.");
+    return;
+  }
+  if ((*tail)->next == *tail)
+  {
+    free(*tail);
+    return;
+  }
+
   struct node *current = (*tail)->next;
 
   while (current->next != *tail)
@@ -122,8 +144,66 @@ void delete_last(struct node **tail)
   (*tail) = current;
 }
 
-void delete_at(struct node**tail, int position) {
-  
+void delete_at(struct node **tail, int position)
+{
+  if (*tail == NULL)
+  {
+    printf("CSLL is already empty, can not perform deletion.");
+    return;
+  }
+
+  if (position == 0)
+  {
+    delete_first(tail);
+    return;
+  }
+
+  struct node *prev = NULL;
+  struct node *current = (*tail)->next;
+
+  size_t curr_position = 0;
+
+  while (curr_position < position - 1 && current->next != (*tail)->next)
+  {
+    prev = current;
+    current = current->next;
+    curr_position++;
+  }
+  if (current->next == (*tail)->next)
+  {
+    delete_last(tail);
+    return;
+  }
+
+  if (current == *tail)
+  {
+    delete_last(tail);
+  }
+  else
+  {
+    prev->next = current->next;
+    free(current);
+  }
+}
+
+size_t get_csll_length(struct node *tail)
+{
+  if (tail == NULL)
+  {
+    printf("Empty.");
+    return 0;
+  }
+
+  struct node *current = tail;
+
+  size_t length = 0;
+  do
+  {
+    length++;
+    current = current->next;
+  } while (current != tail);
+
+  return length;
 }
 
 struct node *create_csll()
@@ -180,8 +260,15 @@ struct node *create_csll()
 int main()
 {
   struct node *tail = create_csll();
-  delete_last(&tail);
-  delete_first(&tail);
+  delete_at(&tail, 10);
   print_node(tail);
+
+  size_t length = get_csll_length(tail);
+
+  printf("%d", length);
+  clear_list(&tail);
+
+  if (tail == NULL)
+    printf("CSLL deleted successfully!");
   return 0;
 }
