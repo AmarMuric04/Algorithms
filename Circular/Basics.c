@@ -122,6 +122,10 @@ void delete_last(struct node **tail)
   (*tail) = current;
 }
 
+void delete_at(struct node**tail, int position) {
+  
+}
+
 struct node *create_csll()
 {
 
