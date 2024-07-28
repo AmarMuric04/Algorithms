@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#define STACK_SIZE 4
+#include <math.h>
+#define STACK_SIZE 50
 
 int stack_arr[STACK_SIZE];
 int top = -1;
@@ -28,7 +29,6 @@ void push_to_stack(int data)
     return;
   }
   top++;
-  printf("Adding %d...\n", data);
   stack_arr[top] = data;
 }
 
@@ -42,8 +42,28 @@ int pop_from_stack()
   int value = stack_arr[top];
 
   top--;
-  printf("Removing %d...\n", value);
   return value;
+}
+
+void prime_factorial(int num)
+{
+  int dividant = 2;
+  while (num != 1)
+  {
+    while (num % dividant == 0)
+    {
+      push_to_stack(dividant);
+      num /= dividant;
+    }
+    dividant++;
+  }
+
+  while (top != -1)
+  {
+    printf("%d", pop_from_stack());
+    if (top != -1)
+      printf(" - ");
+  }
 }
 
 void print_stack()
@@ -56,25 +76,11 @@ void print_stack()
   for (size_t i = 0; i <= top; ++i)
   {
     printf("%d", stack_arr[i]);
-    if (i < top)
-      printf(" - ");
   }
   printf("\n");
 }
 
 int main()
 {
-  int data;
-  push_to_stack(1);
-  push_to_stack(2);
-  push_to_stack(3);
-  push_to_stack(4);
-  push_to_stack(5);
-  push_to_stack(6);
-  data = pop_from_stack();
-  data = pop_from_stack();
-  data = pop_from_stack();
-  print_stack();
-  return 0;
+  prime_factorial(5213412);
 }
-// 8lvgccryq
