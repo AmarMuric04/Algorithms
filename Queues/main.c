@@ -72,12 +72,17 @@ struct Queue *create_queue(unsigned capacity)
 
 int main()
 {
-  struct Queue *queue = create_queue(10);
+  struct Queue *queue = create_queue(5);
   enqueue(queue, 20);
   enqueue(queue, 30);
   enqueue(queue, 40);
   enqueue(queue, 50);
   enqueue(queue, 60);
+  enqueue(queue, 70);
+  enqueue(queue, 80);
+  enqueue(queue, 90);
+  enqueue(queue, 100);
+  enqueue(queue, 110);
 
   printf("The rear is %d\n", rear(queue));
   printf("The front is %d\n", front(queue));
