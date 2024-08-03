@@ -11,7 +11,14 @@ int hash_function(int number)
 
 int hash_insert(int *array, int number)
 {
-  array[hash_function(number)] = number;
+  int index = hash_function(number);
+  if (array[index] != INT_MIN)
+  {
+    printf("Collision -> %d\n", number);
+    return INT_MIN;
+  }
+
+  array[index] = number;
 }
 
 void print_hash(int *array)
@@ -26,7 +33,7 @@ int main()
   for (int i = 0; i < TABLE_SIZE; i++)
     array[i] = INT_MIN;
 
-  int values[] = {18, 41, 22, 44, 59, 32, 31, 73};
+  int values[] = {18, 41, 22, 44, 59, 32, 31, 73, 48, 39, 15, 14, 16, 17, 13, 12, 11, 9, 6, 4, 3, 2};
   int num_values = sizeof(values) / sizeof(values[0]);
 
   for (int i = 0; i < num_values; i++)

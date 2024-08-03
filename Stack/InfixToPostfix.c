@@ -1,9 +1,8 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include <math.h>
-#include <stdbool.h>
 #include <ctype.h>
 #define MAX 10000
 
