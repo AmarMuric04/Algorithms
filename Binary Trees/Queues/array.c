@@ -150,22 +150,28 @@ void insert_to_bst(Node **root, int data)
   }
 }
 
-void print_queue(Queue *s)
+void print_queue(Node *root)
 {
-  if (is_empty(s))
+
+  if (root == NULL)
   {
-    printf("Queue is empty\n");
     return;
   }
 
-  printf("Queue elements: ");
-  int i;
-  for (i = 0; i < s->size; i++)
+  Queue *q = create_queue(100);
+  enqueue(q, root);
+
+  while (!is_empty(q))
   {
-    int index = (s->front + i) % s->capacity;
-    printf("%d ", s->array[index]);
+    Node *t = dequeue(q);
+    printf("%d ", t->data);
+    // -------
+    if (t->left != NULL)
+      enqueue(q, t->left);
+    if (t->right != NULL)
+      enqueue(q, t->right);
   }
-  printf("\n");
+  // -------
 }
 
 void free_queue(Queue *q)
@@ -174,15 +180,15 @@ void free_queue(Queue *q)
   free(q);
 }
 
-void inorder(Node *root)
-{
-  if (root != NULL)
-  {
-    inorder(root->left);
-    printf("%d ", root->data);
-    inorder(root->right);
-  }
-}
+// void inorder(Node *root)
+// {
+//   if (root != NULL)
+//   {
+//     inorder(root->left);
+//     printf("%d ", root->data);
+//     inorder(root->right);
+//   }
+// }
 
 int main()
 {
@@ -206,6 +212,6 @@ int main()
   insert_to_bst(&root, 600);
   insert_to_bst(&root, 700);
 
-  inorder(root);
+  print_queue(root);
   return 0;
 }
