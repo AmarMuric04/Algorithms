@@ -1,2 +1,2 @@
 
-  insert_to_tree(&root1, 4);
+      (*ll)->head = NULL;
